@@ -189,11 +189,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
           <input class="header-val" placeholder="Header value" value="application/json" />
           <button class="remove-header" onclick="removeHeader(this)" title="Remove">×</button>
         </div>
-        <div class="header-row">
-          <input class="header-key" placeholder="Header name" value="Content-Type" />
-          <input class="header-val" placeholder="Header value" value="application/json" />
-          <button class="remove-header" onclick="removeHeader(this)" title="Remove">×</button>
-        </div>
       </div>
       <button class="add-header-btn" onclick="addHeader()">+ Add Header</button>
     </div>
@@ -242,7 +237,7 @@ function addHeader() {
 
 function removeHeader(btn) {
   const panel = document.getElementById('headersPanel');
-  if (panel.children.length > 1) btn.parentElement.remove();
+  if (panel.children.length > 0) btn.parentElement.remove();
 }
 
 function getHeaders() {
