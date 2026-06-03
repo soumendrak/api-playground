@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="80" fill="#0f0f1a"/>
+  <!-- Left bracket -->
+  <path d="M180 120 L140 120 Q120 120 120 140 L120 200 Q120 220 140 220 L180 220" fill="none" stroke="#ff6b35" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Right bracket -->
+  <path d="M332 120 L372 120 Q392 120 392 140 L392 200 Q392 220 372 220 L332 220" fill="none" stroke="#ff6b35" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Arrow right -->
+  <line x1="220" y1="170" x2="292" y2="170" stroke="#ff6b35" stroke-width="12" stroke-linecap="round"/>
+  <path d="M280 150 L300 170 L280 190" fill="none" stroke="#ff6b35" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Response lines below -->
+  <line x1="160" y1="320" x2="352" y2="320" stroke="#e0e0e0" stroke-width="6" stroke-linecap="round" opacity="0.3"/>
+  <line x1="170" y1="350" x2="340" y2="350" stroke="#e0e0e0" stroke-width="6" stroke-linecap="round" opacity="0.2"/>
+  <line x1="160" y1="380" x2="320" y2="380" stroke="#ff6b35" stroke-width="6" stroke-linecap="round" opacity="0.6"/>
+  <line x1="170" y1="410" x2="330" y2="410" stroke="#e0e0e0" stroke-width="6" stroke-linecap="round" opacity="0.2"/>
+</svg>
