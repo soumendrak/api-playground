@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/soumendrak/api-playground/main/logo.svg" alt="API Playground" width="120" />
+  <img src="./logo.svg" alt="API Playground" width="120" />
 </p>
 
 <h1 align="center">API Playground</h1>
