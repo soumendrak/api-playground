@@ -180,6 +180,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
   <div class="content-area">
     <div class="tabs">
       <div class="tab active" data-tab="headers" onclick="switchTab('headers')">Headers</div>
+      <div class="tab" data-tab="query" onclick="switchTab('query')">Query</div>
       <div class="tab" data-tab="body" onclick="switchTab('body')">Body</div>
     </div>
     <div class="tab-content active" id="tab-headers">
@@ -191,6 +192,16 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
         </div>
       </div>
       <button class="add-header-btn" onclick="addHeader()">+ Add Header</button>
+    </div>
+    <div class="tab-content" id="tab-query">
+      <div class="headers-panel" id="queryPanel">
+        <div class="header-row">
+          <input class="header-key" placeholder="Param name" value="" />
+          <input class="header-val" placeholder="Param value" value="" />
+          <button class="remove-header" onclick="removeQueryParam(this)" title="Remove">×</button>
+        </div>
+      </div>
+      <button class="add-header-btn" onclick="addQueryParam()">+ Add Query Param</button>
     </div>
     <div class="tab-content" id="tab-body">
       <div class="body-panel">
@@ -238,6 +249,51 @@ function addHeader() {
 function removeHeader(btn) {
   const panel = document.getElementById('headersPanel');
   if (panel.children.length > 0) btn.parentElement.remove();
+}
+
+// Query params
+function addQueryParam() {
+  const panel = document.getElementById('queryPanel');
+  const row = document.createElement('div');
+  row.className = 'header-row';
+  row.innerHTML = '<input class="header-key" placeholder="Param name" /><input class="header-val" placeholder="Param value" /><button class="remove-header" onclick="removeQueryParam(this)" title="Remove">×</button>';
+  panel.appendChild(row);
+  updateUrlFromParams();
+  // Listen for changes
+  row.querySelectorAll('input').forEach(inp => inp.addEventListener('input', updateUrlFromParams));
+}
+
+function removeQueryParam(btn) {
+  const panel = document.getElementById('queryPanel');
+  if (panel.children.length > 0) {
+    btn.parentElement.remove();
+    updateUrlFromParams();
+  }
+}
+
+function getQueryParams() {
+  const rows = document.querySelectorAll('#queryPanel .header-row');
+  const params = [];
+  rows.forEach(r => {
+    const k = r.querySelector('.header-key').value.trim();
+    const v = r.querySelector('.header-val').value.trim();
+    if (k) params.push({ key: k, value: v });
+  });
+  return params;
+}
+
+function updateUrlFromParams() {
+  const urlInput = document.getElementById('urlInput');
+  let url = urlInput.value;
+  // Remove existing query string
+  const baseUrl = url.split('?')[0];
+  const params = getQueryParams();
+  if (params.length > 0) {
+    const qs = params.map(p => encodeURIComponent(p.key) + '=' + encodeURIComponent(p.value)).join('&');
+    urlInput.value = baseUrl + '?' + qs;
+  } else {
+    urlInput.value = baseUrl;
+  }
 }
 
 function getHeaders() {
@@ -400,6 +456,29 @@ function deleteCollection(index) {
 // Keyboard shortcut
 document.addEventListener('keydown', e => {
   if (e.ctrlKey && e.key === 'Enter') sendRequest();
+});
+
+// URL input change: parse query params from URL
+document.getElementById('urlInput').addEventListener('input', function() {
+  const qsIndex = this.value.indexOf('?');
+  if (qsIndex >= 0) {
+    const qs = this.value.substring(qsIndex + 1);
+    const panel = document.getElementById('queryPanel');
+    // Only auto-parse if query table is empty
+    if (panel.children.length === 1 && !panel.children[0].querySelector('.header-key').value) {
+      const params = qs.split('&').filter(p => p.includes('='));
+      panel.innerHTML = '';
+      params.forEach(p => {
+        const [k, v] = p.split('=').map(s => decodeURIComponent(s.replace(/\+/g, ' ')));
+        const row = document.createElement('div');
+        row.className = 'header-row';
+        row.innerHTML = `<input class="header-key" placeholder="Param name" value="${esc(k)}" /><input class="header-val" placeholder="Param value" value="${esc(v)}" /><button class="remove-header" onclick="removeQueryParam(this)" title="Remove">×</button>`;
+        panel.appendChild(row);
+        row.querySelectorAll('input').forEach(inp => inp.addEventListener('input', updateUrlFromParams));
+      });
+      if (params.length === 0) addQueryParam();
+    }
+  }
 });
 
 // Init
